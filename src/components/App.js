@@ -1,41 +1,35 @@
-import React, { Component, useState } from "react";
-import "../styles/App.css";
+import React, { useState, useEffect } from 'react'
+import '../styles/App.css';
+const App = () => {
+  let time = new Date();
+  time = time.toLocaleString();
+  // console.log(time);
+  const [currenttime, setTime] = useState(time);
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      date: new Date()
-    };
+  useEffect(() => {
+    let id = setInterval(() => {
+      time = new Date();
+      time = time.toLocaleString();
+      setTime(time);
 
-    this.tick = this.tick.bind(this);
-  }
+    })
 
-  componentDidMount() {
-    this.timerID = setInterval(this.tick, 1000);
-  }
+    return () => {
+      // console.log(time);
+      clearInterval(id);
+    }
+  }, [currenttime])
 
-  componentWillUnmount() {
-    clearInterval(this.timerID);
-  }
 
-  tick() {
-    // console.log("state is not updated")
-    this.setState(
-      {
-        date: new Date()
-      }
-      // () => console.log("state is updated")
-    );
-  }
+  return (
+    <div id="main">
+      <div className="date-time">
+        {currenttime}
 
-  render() {
-    return (
-      <div className="Clock">
-        <h3 id="time">{this.state.date.toLocaleTimeString()}</h3>
       </div>
-    );
-  }
+    </div>
+  )
 }
+
 
 export default App;
